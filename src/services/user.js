@@ -13,7 +13,10 @@ module.exports = {
                 VALUES (?, ?);
             `;
 
-            const [rows, fields] = await conn.query(sql, [username, description]);
+            // the execute method can protect from sql injection attacks
+            // by separating the data from the command
+            // https://github.com/sidorares/node-mysql2#using-prepared-statements
+            const [rows, fields] = await conn.execute(sql, [username, description]);
 
             // commit the changes
             await conn.commit();
@@ -44,7 +47,10 @@ module.exports = {
                 VALUES (?, ?);
             `;
 
-            const [rows, fields] = await conn.query(sql, [username, description]);
+            // the execute method can protect from sql injection attacks
+            // by separating the data from the command
+            // https://github.com/sidorares/node-mysql2#using-prepared-statements
+            const [rows, fields] = await conn.execute(sql, [username, description]);
 
             throw new Error('a stupid error for no good reason');
 
@@ -73,7 +79,7 @@ module.exports = {
                 SELECT * FROM user
             `;
 
-            const [rows, fields] = await conn.query(sql);
+            const [rows, fields] = await conn.execute(sql);
 
             conn.release();
             return rows;
@@ -93,7 +99,7 @@ module.exports = {
                 WHERE user_id = ?
             `;
 
-            const [rows, fields] = await conn.query(sql, [userId]);
+            const [rows, fields] = await conn.execute(sql, [userId]);
 
             conn.release();
             return rows[0];

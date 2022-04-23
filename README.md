@@ -51,7 +51,10 @@ try {
         VALUES (?, ?);
     `;
 
-    const [rows, fields] = await conn.query(sql, [username, description]);
+    // the execute method can protect from sql injection attacks
+    // by separating the data from the command
+    // https://github.com/sidorares/node-mysql2#using-prepared-statements
+    const [rows, fields] = await conn.execute(sql, [username, description]);
 
     // commit the changes
     await conn.commit();

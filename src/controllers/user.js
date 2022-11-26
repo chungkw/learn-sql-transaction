@@ -38,6 +38,8 @@ module.exports.getAll = async (req, res, next) => {
     try {
         const results = await userSvc.getMany();
 
+        console.log(!!results, results);
+
         res.status(200).json(results);
         return next();
     }
@@ -51,6 +53,8 @@ module.exports.getOne = async (req, res, next) => {
         const { userId } = req.params;
 
         const results = await userSvc.getOne(userId);
+
+        console.log(!!results, results);
 
         res.status(200).json(results);
         return next();
